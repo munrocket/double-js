@@ -14,7 +14,7 @@ IEEE arithmetic and can produce artifacts, but CPU arithmetic is robust and brow
 ### Benchmark
 ![](https://i.imgur.com/dXeSYKO.png)
 
-You can check [quality / performance](https://munrocket.github.io/double.js/test/bench/bench.html) and [correctness](https://munrocket.github.io/double.js/test/e2e.html) of double.js library in your browser.
+You can check [quality / performance](https://munrocket.github.io/double-js/test/bench/bench.html) and [correctness](https://munrocket.github.io/double-js/test/e2e.html) of double.js library in your browser.
 
 ### Usage
 Include double.js script to webpage or install npm package. Here some basic examples
@@ -37,7 +37,7 @@ let dF = (x) => F(x.add(h)).sub(F(x)).div(h);
 // |f'(x)| < 1 ? print(x)
 if (dF(x).abs().lt(1)) { console.log(x.toExponential()); }
 ```
-Further API details you can find in [wiki](https://github.com/munrocket/double.js/wiki) page and check it in [sandbox](https://runkit.com/munrocket/double-js-example). Be careful when initializing a new floats, for example `new Double(0.1)` is ok for integer numbers, but you should use `new Double('0.1')` to get correct results for fractional numburs. All double-double arithmetic functions are accurate and tested, say me if you find something strange.
+Further API details you can find in [wiki](https://github.com/munrocket/double-js/wiki) page and check it in [sandbox](https://runkit.com/munrocket/double-js-example). Be careful when initializing a new floats, for example `new Double(0.1)` is ok for integer numbers, but you should use `new Double('0.1')` to get correct results for fractional numburs. All double-double arithmetic functions are accurate and tested, say me if you find something strange.
 
 ### WebAssembly version
 I got x3 boost in Chrome, x3.5 in Safari and x7 in Firefox for mandelbrot set algo with hardcoded global variables. To get speed improvement with wasm, you need to write your entire algorithm with it, because Js<->Wasm interop is too heavy.
