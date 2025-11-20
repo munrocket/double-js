@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Double = void 0;
 const splitter = 134217729.;
 function twoSum(a, b) {
     let s = a + b;
@@ -433,5 +436,5 @@ class Double {
     pow(exp) { return Double.pow22(Double.clone(this), exp); }
     pown(exp) { return Double.pow2n(Double.clone(this), exp); }
 }
-export default Double;
-export { Double };
+exports.Double = Double;
+exports.default = Double;
