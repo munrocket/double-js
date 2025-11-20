@@ -24,7 +24,7 @@
     "build-browser": "esbuild ./src/double.ts --bundle --outfile=./dist/browser/double.js",
     "build-wasm": "asc --extension=.as test/bench/bench.as wasm/double.as -b test/bench/bench.wasm -O3",
     "postbuild": "(echo { && echo   \"type\": \"commonjs\" && echo }) > ./dist/cjs/package.json",
-    "test": "node -r esm ./test/test.js",
+    "test": "node ./test/test.js",
     "ci": "npm run start & sleep 3 && npm run e2e && npm run cov",
     "e2e": "node --experimental-modules --no-warnings ./test/e2e.mjs",
     "cov": "sed -i 's/.nyc_output\\/js/dist/g' .nyc_output/out.json && nyc report --reporter=lcov"
@@ -32,7 +32,6 @@
   "devDependencies": {
     "assemblyscript": "0.19.23",
     "esbuild": "^0.25.0",
-    "esm": "^3.2.25",
     "nyc": "^15.1.0",
     "onchange": "^7.1.0",
     "puppeteer": "14.4.1",
