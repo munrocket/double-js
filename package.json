@@ -1,16 +1,28 @@
 {
   "name": "double.js",
-  "version": "1.1.4",
+  "version": "2.0.0",
   "description": "Emulated float128 or double-double arithmetic. A floating point expansion with 31 accurate decimal digits.",
-  "main": "dist/double.js",
-  "module": "dist/double.esm.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/double.d.ts",
+        "default": "./dist/double.js"
+      },
+      "require": {
+        "types": "./dist/cjs/double.d.ts",
+        "default": "./dist/cjs/double.js"
+      }
+    }
+  },
   "scripts": {
     "start": "servez -S",
     "watch": "onchange 'src/*.ts' -- npm run build",
-    "build": "npm run build-esm && npm run build-browser && npm run build-wasm",
-    "build-esm": "esbuild ./src/double.ts --outfile=./dist/double.esm.js",
-    "build-browser": "esbuild ./src/double.ts --bundle --outfile=./dist/double.js",
+    "build": "npm run build-mod && npm run build-browser && npm run build-wasm",
+    "build-mod": "tsc && tsc -p tsconfig-cjs.json",
+    "build-browser": "esbuild ./src/double.ts --bundle --outfile=./dist/browser/double.js",
     "build-wasm": "asc --extension=.as test/bench/bench.as wasm/double.as -b test/bench/bench.wasm -O3",
+    "postbuild": "(echo { && echo   \"type\": \"commonjs\" && echo }) > ./dist/cjs/package.json",
     "test": "node -r esm ./test/test.js",
     "ci": "npm run start & sleep 3 && npm run e2e && npm run cov",
     "e2e": "node --experimental-modules --no-warnings ./test/e2e.mjs",
@@ -26,6 +38,8 @@
     "puppeteer-to-istanbul": "^1.4.0",
     "servez": "^1.10.0",
     "zora": "^5.0.0"
+    "@lvlte/tsconfig": "^1.1.0",
+    "typescript": "^5.9.3"
   },
   "eslintIgnore": [
     "dist",
