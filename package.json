@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "Emulated float128 or double-double arithmetic. A floating point expansion with 31 accurate decimal digits.",
   "type": "module",
+  "main": "./dist/cjs/double.js",
   "exports": {
     ".": {
       "import": {
