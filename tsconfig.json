@@ -5,6 +5,7 @@
     "lib": [
       "es2018"
     ],
-    "removeComments": true
+    "removeComments": true,
+    "useDefineForClassFields": false
   }
 }

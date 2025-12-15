@@ -25,18 +25,6 @@ function oneSqr(a) {
 const MethodArgTypeError = new TypeError('Double method parameter must be a Double instance or a number');
 class Double {
     constructor(obj) {
-        Object.defineProperty(this, "hi", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
-        Object.defineProperty(this, "lo", {
-            enumerable: true,
-            configurable: true,
-            writable: true,
-            value: void 0
-        });
         if (obj instanceof Double) {
             this.hi = obj.hi;
             this.lo = obj.lo;
