@@ -36,8 +36,8 @@
     "onchange": "^7.1.0",
     "puppeteer": "14.4.1",
     "puppeteer-to-istanbul": "^1.4.0",
-    "servez": "^1.10.0",
-    "zora": "^5.0.0"
+    "servez": "^2.3.2",
+    "zora": "^6.0.0",
     "@lvlte/tsconfig": "^1.1.0",
     "typescript": "^5.9.3"
   },
