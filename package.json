@@ -38,7 +38,6 @@
     "puppeteer-to-istanbul": "^1.4.0",
     "servez": "^2.3.2",
     "zora": "^6.0.0",
-    "@lvlte/tsconfig": "^1.1.0",
     "typescript": "^5.9.3"
   },
   "eslintIgnore": [

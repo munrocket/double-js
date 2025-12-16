@@ -1,11 +1,30 @@
 {
-  "extends": "@lvlte/tsconfig",
+  "include": [
+    "${configDir}/src"
+  ],
   "compilerOptions": {
     "target": "es2015",
     "lib": [
       "es2018"
     ],
-    "removeComments": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "outDir": "${configDir}/dist",
+    "newLine": "lf",
+    "stripInternal": true,
+    "noEmitOnError": true,
+    "verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": false,
+    "noUncheckedSideEffectImports": true,
+    "removeComments": true
   }
 }
