@@ -1,3 +1,10 @@
+import Double from "../../dist/double.js";
+import * as DD from "https://esm.sh/double-double";
+import Decimal from "https://esm.sh/decimal.js";
+import BigNumber from "https://esm.sh/bignumber.js";
+import Big from "https://esm.sh/big.js";
+import { BigFloat32 } from "https://esm.sh/bigfloat";
+
 /* initialization */
 
 let wasm;
@@ -32,15 +39,16 @@ window.onload = function() {
         Big.DP = 31;
         Decimal.set({ precision: 31 });
         BigNumber.set({ DECIMAL_PLACES: 31 });
-  
+
         // benchmark
         let popups = document.getElementsByClassName('bench-popup');
         popups[0].style.display = 'block';
         let now = () => (typeof performance != 'undefined') ? performance.now() : Date.now();
         let calculators = [
           withDoubleJs,
-          //withDoubleJs_Ver01, 
-          //withDoubleJs_Wasm,
+          //withDoubleJs_Ver01,
+          withDoubleJs_Wasm,
+          withDoubleDouble,
           withBigNumberJs,
           withDecimalJs,
           withBigJs,
@@ -59,13 +67,11 @@ window.onload = function() {
           };
           calculator.benchmark = (end - start) / counter;
         });
-  
+
         // draw charts
         drawCharts(calculators);
         document.getElementById('title').innerHTML = 'Split test and benchmark';
-  
       }, 10);
-
     }, 10);
   });
 }
@@ -89,7 +95,7 @@ function withNumber(maxIter, target, buffer, pixel) {
 }
 
 function withDoubleJs(maxIter, target, buffer, pixel) {
-  let D = Double;
+  const D = Double;
   let iter = 0;
   let x = D.Zero, y = D.Zero;
   let xx = D.Zero, xy = D.Zero, yy = D.Zero;
@@ -103,6 +109,28 @@ function withDoubleJs(maxIter, target, buffer, pixel) {
     xx = x.sqr();
     yy = y.sqr();
     xy = x.mul(y);
+  }
+  colorizer(maxIter, iter - 1, buffer, pixel);
+}
+
+function withDoubleDouble(maxIter, target, buffer, pixel) {
+  const { ddAddDd, ddDiffDd, ddMultDd, ddDivDd, ddSqrt, ddLt } = DD;
+  let iter = 0;
+  let x = [0, 0], y = [0, 0];
+  let xx = [0, 0], xy = [0, 0], yy = [0, 0];
+  let tx = [0, target.x], ty = [0, target.y];
+  let tdx = [0, target.dx], tdy = [0, target.dy];
+  // let cx = tx.sub(tdx).add( tdx.mul(new D(2 * pixel.i)).div(new D(buffer.width)) );
+  let cx = ddAddDd(ddDiffDd(tx, tdx), ddDivDd(ddMultDd(tdx, [0, 2 * pixel.i]), [0, buffer.width]));
+  // let cy = ty.add(tdy).sub( tdy.mul(new D(2 * pixel.j)).div(new D(buffer.height)) );
+  let cy = ddDiffDd(ddAddDd(ty, tdy), ddDivDd(ddMultDd(tdy, [0, 2 * pixel.j]), [0, buffer.height]));
+  // while (iter++ < maxIter && xx.add(yy).lt(4)) {
+  while (iter++ < maxIter && ddLt(ddAddDd(xx, yy), [0, 4])) {
+    x = ddAddDd(ddDiffDd(xx, yy), cx);  // xx.sub(yy).add(cx);
+    y = ddAddDd(ddAddDd(xy, xy), cy);   // xy.add(xy).add(cy);
+    xx = ddMultDd(x, x);                // x.sqr();
+    yy = ddMultDd(y, y);                // y.sqr();
+    xy = ddMultDd(x, y);                // x.mul(y);
   }
   colorizer(maxIter, iter - 1, buffer, pixel);
 }
@@ -174,7 +202,7 @@ function withBigNumberJs(maxIter, target, buffer, pixel) {
     yy = y.times(y).dp(31);
     xy = x.times(y).dp(31);
   }
-  colorizer(maxIter, iter - 1, buffer, pixel); 
+  colorizer(maxIter, iter - 1, buffer, pixel);
 }
 
 function withBigJs(maxIter, target, buffer, pixel) {
@@ -192,11 +220,11 @@ function withBigJs(maxIter, target, buffer, pixel) {
     yy = y.mul(y).round(31);
     xy = x.mul(y).round(31);
   }
-  colorizer(maxIter, iter - 1, buffer, pixel); 
+  colorizer(maxIter, iter - 1, buffer, pixel);
 }
 
 function withBigFloat32(maxIter, target, buffer, pixel) {
-  let BF = bigfloat.BigFloat32;
+  let BF = BigFloat32;
   let iter = 0;
   let x = new BF(0), y = new BF(0);
   let xx = new BF(0), xy = new BF(0), yy = new BF(0);
@@ -235,7 +263,7 @@ function withFractionJs(maxIter, target, buffer, pixel) {
 /* mandelbrot drawing */
 
 function colorizer(maxIter, iter, buffer, pixel) {
-  color = (iter == maxIter) ? 0 : 256 * (maxIter - (iter * 25) % maxIter) / maxIter;
+  const color = (iter == maxIter) ? 0 : 256 * (maxIter - (iter * 25) % maxIter) / maxIter;
   buffer.data[pixel.id++] = color;
   buffer.data[pixel.id++] = color;
   buffer.data[pixel.id++] = color;

@@ -24,23 +24,20 @@
   <div style="padding-top: 10px">
     <canvas id="withDoubleJs" width="15" height="10"></canvas>
     <!-- <canvas id="withDoubleJs_Ver01" width="15" height="10"></canvas> -->
-    <!-- <canvas id="withDoubleJs_Wasm" width="15" height="10"></canvas> -->
+    <canvas id="withDoubleJs_Wasm" width="15" height="10"></canvas>
+    <canvas id="withDoubleDouble" width="15" height="10"></canvas>
     <canvas id="withDecimalJs" width="15" height="10"></canvas>
     <canvas id="withBigNumberJs" width="15" height="10"></canvas>
     <canvas id="withBigJs" width="15" height="10"></canvas>
     <canvas id="withBigFloat32" width="15" height="10"></canvas>
     <canvas id="withFractionJs" width="15" height="10"></canvas>
-    <!-- <div style="padding-top: 1px;"><canvas id="withBigFloat53" width="15" height="10"></canvas> -->
+    <!-- <canvas id="withBigFloat53" width="15" height="10"></canvas> -->
   </div>
 </body>
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 
-<script src="https://unpkg.com/double.js@0.1.0"></script><script>D01 = Double;</script>
-<script src="../../dist/double.js"></script>
-<script src="https://unpkg.com/decimal.js"></script>
-<script src="https://unpkg.com/bignumber.js"></script>
-<script src="https://unpkg.com/big.js"></script>
-<script src="https://unpkg.com/bigfloat"></script>
+<script src="https://unpkg.com/double.js@0.1.0/dist/double.js"></script>
+<script>window.D01 = Double; delete Double;</script>
 
-<script src="./bench.js"></script>
+<script type="module" src="./bench.js"></script>
 </html>

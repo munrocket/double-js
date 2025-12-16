@@ -1,6 +1,5 @@
-//import { test } from 'zora'; //node
-import { test } from 'https://cdn.jsdelivr.net/npm/zora@3.0.3/dist/bundle/module.js'; //browser
-import { Double } from '../dist/double.esm.js';
+import { test } from 'zora';
+import { Double } from '../dist/double.js';
 
 let D = Double;
 let eps1 = 1e-15;

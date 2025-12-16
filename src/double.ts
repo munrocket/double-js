@@ -28,6 +28,8 @@ function oneSqr(a: float) {
   return { hi: t, lo: ((ah * ah - t) + hl + hl) + al * al };
 }
 
+const MethodArgTypeError = new TypeError('Double method parameter must be a Double instance or a number');
+
 /* Main class for double-word arithmetic */
 
 class Double {
@@ -39,20 +41,39 @@ class Double {
     if (obj instanceof Double) {
       this.hi = obj.hi;
       this.lo = obj.lo;
-    } else if (typeof obj === 'number') {
-      this.hi = obj;
-      this.lo = 0.;
-    } else if (typeof obj === 'string') {
-      let d = Double.fromString(obj);
-      this.hi = d.hi;
-      this.lo = d.lo;
-    } else if (Array.isArray(obj)) {
-      this.hi = obj[0];
-      this.lo = obj[1];
-    } else if (typeof obj === 'object') {
-      this.hi = obj.hi;
-      this.lo = obj.lo;
+      return this;
     }
+
+    switch (typeof obj) {
+      case 'number':
+        this.hi = obj;
+        this.lo = 0;
+        break;
+
+      case 'string': {
+        const d = Double.fromString(obj);
+        this.hi = d.hi;
+        this.lo = d.lo;
+        break;
+      }
+
+      case 'object':
+        if (Array.isArray(obj)) {
+          this.hi = +obj[0];
+          this.lo = +obj[1];
+        }
+        else {
+          this.hi = +obj.hi;
+          this.lo = +obj.lo;
+        }
+        break;
+
+      default:
+        this.hi = NaN;
+        this.lo = NaN;
+        // or throw TypeError
+    }
+
   }
 
   /* Static constructors */
@@ -215,7 +236,7 @@ class Double {
 
   // DWDivFP1 (13 with inlined 1 from [1])
   static div21(X: Double, f: float): Double {
-    let th = X.hi / f; 
+    let th = X.hi / f;
     let P = twoProd(th, f);
     let D = twoSum(X.hi, -P.hi);
     let tl = (D.hi + (D.lo + (X.lo - P.lo))) / f;
@@ -295,7 +316,7 @@ class Double {
   static get E(): Double { let d = new Double();        d.hi = 2.718281828459045; d.lo = 1.4456468917292502e-16; return d; }
   static get Log2(): Double { let d = new Double();     d.hi = 0.6931471805599453; d.lo = 2.319046813846299e-17; return d; }
   static get Phi(): Double { let d = new Double();      d.hi = 1.618033988749895; d.lo = -5.432115203682505e-17; return d; }
-  
+
   /* Elementary functions with double */
 
   // [16/16] pade of exp(x)
@@ -361,45 +382,55 @@ class Double {
 
   /* Repeating static methods to instance */
 
-  add(other: any): Double {
+  add(other: Double | number): Double {
     if (other instanceof Double) return Double.add22(Double.clone(this), other);
     else if (typeof other == 'number') return Double.add21(Double.clone(this), other);
+    throw MethodArgTypeError;
   }
-  sub(other: any): Double {
+  sub(other: Double | number): Double {
     if (other instanceof Double) return Double.sub22(Double.clone(this), other);
     else if (typeof other == 'number') return Double.sub21(Double.clone(this), other);
+    throw MethodArgTypeError;
   }
-  mul(other: any): Double {
+  mul(other: Double | number): Double {
     if (other instanceof Double) return Double.mul22(Double.clone(this), other);
     else if (typeof other == 'number') return Double.mul21(Double.clone(this), other);
+    throw MethodArgTypeError;
   }
-  div(other: any): Double {
+  div(other: Double | number): Double {
     if (other instanceof Double) return Double.div22(Double.clone(this), other);
     else if (typeof other == 'number') return Double.div21(Double.clone(this), other);
+    throw MethodArgTypeError;
   }
-  eq(other: any): boolean {
+  eq(other: Double | number): boolean {
     if (other instanceof Double) return Double.eq22(this, other);
     else if (typeof other == 'number') return Double.eq21(this, other);
+    throw MethodArgTypeError;
   }
-  ne(other: any): boolean {
+  ne(other: Double | number): boolean {
     if (other instanceof Double) return Double.ne22(this, other);
     else if (typeof other == 'number') return Double.ne21(this, other);
+    throw MethodArgTypeError;
   }
-  gt(other: any): boolean {
+  gt(other: Double | number): boolean {
     if (other instanceof Double) return Double.gt22(this, other);
     else if (typeof other == 'number') return Double.gt21(this, other);
+    throw MethodArgTypeError;
   }
-  lt(other: any): boolean {
+  lt(other: Double | number): boolean {
     if (other instanceof Double) return Double.lt22(this, other);
     else if (typeof other == 'number') return Double.lt21(this, other);
+    throw MethodArgTypeError;
   }
-  ge(other: any): boolean {
+  ge(other: Double | number): boolean {
     if (other instanceof Double) return Double.ge22(this, other);
     else if (typeof other == 'number') return Double.ge21(this, other);
+    throw MethodArgTypeError;
   }
-  le(other: any): boolean {
+  le(other: Double | number): boolean {
     if (other instanceof Double) return Double.le22(this, other);
     else if (typeof other == 'number') return Double.le21(this, other);
+    throw MethodArgTypeError;
   }
   abs(): Double { return Double.abs2(Double.clone(this)); }
   neg(): Double { return Double.neg2(Double.clone(this)); }
