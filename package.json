@@ -1,6 +1,6 @@
 {
   "name": "double.js",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Emulated float128 or double-double arithmetic. A floating point expansion with 31 accurate decimal digits.",
   "main": "dist/double.js",
   "module": "dist/double.esm.js",
@@ -17,7 +17,7 @@
     "cov": "sed -i 's/.nyc_output\\/js/dist/g' .nyc_output/out.json && nyc report --reporter=lcov"
   },
   "devDependencies": {
-    "assemblyscript": "0.19.23",
+    "assemblyscript": "0.28.20",
     "esbuild": "^0.25.0",
     "esm": "^3.2.25",
     "nyc": "^15.1.0",
